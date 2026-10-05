@@ -6,7 +6,7 @@ It includes
 - `ComponentPool` as a wrapper of `ObjectPool` with Unity components specifics
 - `SharedPool` as primary system of centralized pools implementing lifecycle control, scopes, custom pools' handles, control of broken references etc. See below for more details.
 
-## Reasons to exist
+# Reasons to exist
 
 A generic pool implementation is fine as a pattern implementation, as well as the basic implementation provided by Unity with UnityEngine.Pool.
 But Unity as an engine introduces a bunch of edge cases which are good to handle in a centralized way:
@@ -19,6 +19,12 @@ But Unity as an engine introduces a bunch of edge cases which are good to handle
 6. UGUI relies on GameObjects and is tricky to pool across different screens/popups. Local pools are suboptimal, shared pool is an easy plug-in for such cases.
 7. Debug and diagnostics. Considering fragile nature of referencing to GameObject, it is very easy to miss leaking pools and even worse, to get unpredictable behaviour with zombie objects.
 8. TBD: analytics and dynamic memory pressure control
+
+# Installation
+
+Install via the Package Manager window by using [GitHub URL](https://docs.unity3d.com/Manual/upm-git.html). Press the Add button in the Package Manager window and enter the following URL:
+
+`https://github.com/oleg-pshenin/com.op.framework.pools.git#v0.1.0`
 
 ## SharedPool public structure
 
@@ -42,9 +48,9 @@ Disposing a scope releases its remaining instances and marks the scope as dispos
 ```csharp
 var scope = SharedPool.CreateScope("Match");
 
-foreach (var projectilPrefab in projectilePrefabs)
+foreach (var projectilePrefab in projectilePrefabs)
 {
-    scope.Get(projectilPrefab);
+    scope.Get(projectilePrefab);
 }
 
 // on match end
@@ -134,6 +140,6 @@ Editor diagnostics tracks:
 - lost active and pooled Unity objects;
 - optional debug names and caller metadata for scopes and handles.
 
-The debugger is editor-only and does not affect pool behaviour. Depends on Odin Inspector at the moment.
+The debugger is editor-only and does not affect pool behaviour. **Depends on Odin Inspector** at the moment.
 
 ![Shared Pool Diagnostics](Documentation~/Images/editor-window.png)
