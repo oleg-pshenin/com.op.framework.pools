@@ -7,6 +7,7 @@ namespace OP.Framework.Pools
     /// <summary>
     /// Unity specific component pool wrapper that manages GameObject activation, Transform set and reset, hierarchy placement, and spawn/release interface calls.
     /// Expects 1 component <-> 1 gameobject relationships, not independent components, many to one, many to many etc.
+    /// Both IReleasable and ISpawnable called after all unity lifecycle events
     /// </summary>
     public class ComponentPool<TComponent> where TComponent : Component
     {
@@ -70,7 +71,7 @@ namespace OP.Framework.Pools
                 transform.SetAsLastSibling();
 
             instance.gameObject.SetActive(true);
-            if (instance is ISpawnable spawnable)
+            foreach (var spawnable in instance.GetComponents<ISpawnable>())
                 spawnable.Spawn();
             return instance;
         }
@@ -82,9 +83,8 @@ namespace OP.Framework.Pools
 
             instance.gameObject.SetActive(false);
 
-            // should be called after set active false or before? - probably yes to avoid 
-            if (instance is IReleasable releasable)
-                releasable.Release();
+            foreach (var spawnable in instance.GetComponents<IReleasable>())
+                spawnable.Release();
 
             if (instance.transform.parent != _poolRoot)
                 instance.transform.SetParent(_poolRoot, false);
