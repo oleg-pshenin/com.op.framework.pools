@@ -1,0 +1,14 @@
+{
+    "name": "OP.Framework.Pools",
+    "rootNamespace": "OP.Framework.Pools",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
