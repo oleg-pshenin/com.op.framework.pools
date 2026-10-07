@@ -67,6 +67,10 @@ namespace OP.Framework.Pools.SharedPool
 
         public static void Release(Component instance)
         {
+            // On release we don't care, we will see if the instance is still valid on Get and other calls, but on teardown we don't want to spam false positives.
+            if (Instance == null)
+                return;
+            
             Instance.ReleaseInternal(instance);
         }
 
