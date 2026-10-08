@@ -1,6 +1,6 @@
 # Pools
 
-`Pools` is unity specific set of components and tools, which allows easy work with component based pooling.
+**Pools** is unity specific set of components and tools, which allows easy work with component-based pooling.
 It includes
 - `ObjectPool` as generic base pool implementation
 - `ComponentPool` as a wrapper of `ObjectPool` with Unity components specifics
@@ -11,20 +11,24 @@ It includes
 A generic pool implementation is fine as a pattern implementation, as well as the basic implementation provided by Unity with UnityEngine.Pool.
 But Unity as an engine introduces a bunch of edge cases which are good to handle in a centralized way:
 
-1. GameObject destroying and zombie objects. Unity overrides the == operator, so a managed shell object may still exist in memory even though the actual engine object has already been destroyed.
-2. GameObject not being a Component, unlike every other entity related to game objects.
-3. One-to-many relationships between GameObjects and components, which makes identifying the actual pooled instance less trivial than just passing a GameObject around.
-4. Hierarchy and GameObject built-in lifecycle calls, including control over the order of Get/Release, SetActive, parenting, transform reset, and spawn/release callbacks.
+1. `GameObject` destroying and zombie objects. Unity overrides the == operator, so a managed shell object may still exist in memory even though the actual engine object has already been destroyed.
+2. `GameObject` not being a `Component`, unlike every other entity related to game objects.
+3. One-to-many relationships between `GameObject` and components, which makes identifying the actual pooled instance less trivial than just passing a GameObject around.
+4. Hierarchy and `GameObject` built-in lifecycle calls, including control over the order of Get/Release, SetActive, parenting, transform reset, and spawn/release callbacks.
 5. Decoupling through self-releasing objects. VFX is a perfect example: the effect can return itself to the pool without introducing dependencies on the system that spawned it or requiring extra infrastructure.
-6. UGUI relies on GameObjects and is tricky to pool across different screens/popups. Local pools are suboptimal, shared pool is an easy plug-in for such cases.
+6. UGUI relies on `GameObject` and is tricky to pool across different screens/popups. Local pools are suboptimal, shared pool is an easy plug-in for such cases.
 7. Debug and diagnostics. Considering fragile nature of referencing to GameObject, it is very easy to miss leaking pools and even worse, to get unpredictable behaviour with zombie objects.
-8. TBD: analytics and dynamic memory pressure control
+8. TBD: analytics on pool capacity usage over time, memory pressure control and dynamic resizing, generations
 
 # Installation
 
 Install via the Package Manager window by using [GitHub URL](https://docs.unity3d.com/Manual/upm-git.html). Press the Add button in the Package Manager window and enter the following URL:
 
 `https://github.com/oleg-pshenin/com.op.framework.pools.git#v0.1.0`
+
+or for latest version
+
+`https://github.com/oleg-pshenin/com.op.framework.pools.git`
 
 ## SharedPool public structure
 
